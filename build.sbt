@@ -25,3 +25,5 @@ credentials += Credentials(
   sys.env.getOrElse("GPG_PUBLIC_KEY", ""), // key identifier
   "ignored" // this field is ignored; passwords are supplied by pinentry
 )
+
+resolvers += Resolver.jcenterRepo

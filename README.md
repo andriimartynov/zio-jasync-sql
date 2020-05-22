@@ -1,5 +1,7 @@
 zio-jasync-sql
 =========
+[ ![Download](https://api.bintray.com/packages/andriimartynov/maven/zio-jasync-sql/images/download.svg) ](https://bintray.com/andriimartynov/maven/zio-jasync-sql/_latestVersion)
+[![Build Status](https://travis-ci.org/andriimartynov/zio-jasync-sql.svg)](https://travis-ci.org/andriimartynov/zio-jasync-sql)
 [![Apache License V.2](https://img.shields.io/badge/license-Apache%20V.2-blue.svg)](https://github.com/andriimartynov/scalatest-zio/blob/master/LICENSE)
 
 
