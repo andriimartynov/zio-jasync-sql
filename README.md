@@ -7,6 +7,19 @@ zio-jasync-sql
 
 Scala wrapper for [jasync-sql](https://github.com/jasync-sql/jasync-sql) a Simple, Netty based, asynchronous, performant and reliable database drivers for PostgreSQL and MySQL.
 
+## Getting zio-jasync-sql
+
+To resolve artifacts through Artifactory, simply add the following code snippet to your build.sbt file:
+
+```scala
+resolvers += Resolver.jcenterRepo
+```
+
+The current version is 1.0.0, which is cross-built against Scala 2.11.x, 2.12.x and 2.13.x.
+
+```scala
+libraryDependencies += "com.github.andriimartynov" %% "zio-jasync-sql" % "1.0.0"
+```
 
 ## Usage example
 ```scala
@@ -27,3 +40,4 @@ queryResult <- sendPreparedStatement("select * from test limit 2")
 
 val task: Task[QueryResult] = rio.provideLayer(layer)
 ```
+See a full example at [zio-jasync-mysql-example](https://github.com/andriimartynov/zio-jasync-example/tree/master/zio-jasync-mysql-example) and [zio-jasync-postgresql-example](https://github.com/andriimartynov/zio-jasync-example/tree/master/zio-jasync-postgresql-example).
