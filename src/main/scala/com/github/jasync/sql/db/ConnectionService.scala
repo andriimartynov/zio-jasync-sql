@@ -34,13 +34,7 @@ object ConnectionService {
 
     def sendPreparedStatement(
                                query: String,
-                               values: Seq[Any]
-                             ): Task[QueryResult]
-
-    def sendPreparedStatement(
-                               query: String,
-                               values: Seq[Any],
-                               release: Boolean
+                               values: Any*
                              ): Task[QueryResult]
 
     def sendQuery(
@@ -99,24 +93,15 @@ object ConnectionService {
                                ): Task[QueryResult] =
         Task
           .fromCompletionStage(
-            connectionPool.sendPreparedStatement(query))
+            connectionPool.sendQuery(query))
 
       def sendPreparedStatement(
                                  query: String,
-                                 values: Seq[Any]
+                                 values: Any*
                                ): Task[QueryResult] =
         Task
           .fromCompletionStage(
             connectionPool.sendPreparedStatement(query, values.asJava))
-
-      def sendPreparedStatement(
-                                 query: String,
-                                 values: Seq[Any],
-                                 release: Boolean
-                               ): Task[QueryResult] =
-        Task
-          .fromCompletionStage(
-            connectionPool.sendPreparedStatement(query, values.asJava, release))
 
       def sendQuery(
                      query: String
@@ -168,16 +153,9 @@ object ConnectionService {
 
   def sendPreparedStatement(
                              query: String,
-                             values: Seq[Any]
+                             values: Any*
                            ): RIO[ConnectionService, QueryResult] =
-    ZIO.accessM(_.get.sendPreparedStatement(query, values))
-
-  def sendPreparedStatement(
-                             query: String,
-                             values: Seq[Any],
-                             release: Boolean
-                           ): RIO[ConnectionService, QueryResult] =
-    ZIO.accessM(_.get.sendPreparedStatement(query, values, release))
+    ZIO.accessM(_.get.sendPreparedStatement(query, values:_*))
 
   def sendQuery(
                  query: String
