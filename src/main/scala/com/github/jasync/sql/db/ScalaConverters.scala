@@ -77,9 +77,7 @@ object ScalaConverters {
   final class QueryResultOps(private val queryResult: QueryResult) extends AnyVal {
 
     def rows: Seq[RowData] =
-      queryResult.getRows
-        .asScala
-        .toSeq //in Scala 2.13 asScala return Buffer
+      queryResult.getRows.asScala.toSeq //in Scala 2.13 asScala return Buffer
 
     def rowsAffected: Long =
       queryResult.getRowsAffected
