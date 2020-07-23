@@ -1,7 +1,7 @@
 import sbt._
 
 object ScalaTest {
-  lazy val SCALATEST_VERSION = "3.1.2"
+  lazy val SCALATEST_VERSION = "3.2.0"
   
   def dependencies: Seq[ModuleID] = Seq(
     "org.scalatest" %% "scalatest" % SCALATEST_VERSION % Test,

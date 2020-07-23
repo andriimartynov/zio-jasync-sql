@@ -7,7 +7,7 @@ name := "zio-jasync-sql"
 licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 scalaVersion := Scala212
 startYear := Some(2020)
-version := "1.0.0"
+version := "1.0.1"
 
 crossScalaVersions := Seq(Scala211, Scala212, Scala213)
 
@@ -18,6 +18,28 @@ libraryDependencies ++= ScalaTest.dependencies
 libraryDependencies += Tools.dependency
 
 libraryDependencies += Zio.dependency
+
+pomExtra := {
+  <url>https://github.com/andriimartynov/zio-jasync-sql</url>
+    <licenses>
+      <license>
+        <name>Apache 2 License</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:andriimartynov/zio-jasync-sql.git</url>
+      <connection>scm:git:git@github.com:andriimartynov/zio-jasync-sql.git</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>andriimartynov</id>
+        <name>andriimartynov</name>
+        <url>https://github.com/andriimartynov</url>
+      </developer>
+    </developers>
+}
 
 credentials += Credentials(
   "GnuPG Key ID",
