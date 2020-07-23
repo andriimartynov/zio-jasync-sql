@@ -120,14 +120,14 @@ class ConnectionServiceSpec extends ZioFlatSpec
     val queryResult = mock[QueryResult]
     val queryResult2 = mock[QueryResult]
 
-    when(pool.sendPreparedStatement("query")).thenReturn(toCompletableFuture(queryResult))
-    when(pool.sendPreparedStatement("query2")).thenReturn(toCompletableFuture(queryResult2))
+    when(pool.sendQuery("query")).thenReturn(toCompletableFuture(queryResult))
+    when(pool.sendQuery("query2")).thenReturn(toCompletableFuture(queryResult2))
 
     for {
       result <- sendPreparedStatement("query")
       assertion <- Task.fromTry(Try {
-        verify(pool, times(1)).sendPreparedStatement(argThat(EqTo("query")))
-        verify(pool, never).sendPreparedStatement(argThat(EqTo("query2")))
+        verify(pool, times(1)).sendQuery(argThat(EqTo("query")))
+        verify(pool, never).sendQuery(argThat(EqTo("query2")))
         result should be(queryResult)
       })
     } yield assertion
@@ -137,14 +137,14 @@ class ConnectionServiceSpec extends ZioFlatSpec
     val queryResult = mock[QueryResult]
     val queryResult2 = mock[QueryResult]
 
-    when(pool.sendPreparedStatement("query")).thenReturn(toCompletableFuture(queryResult))
-    when(pool.sendPreparedStatement("query2")).thenReturn(toCompletableFuture(queryResult2))
+    when(pool.sendQuery("query")).thenReturn(toCompletableFuture(queryResult))
+    when(pool.sendQuery("query2")).thenReturn(toCompletableFuture(queryResult2))
 
     for {
       result <- sendPreparedStatement("query2")
       assertion <- Task.fromTry(Try {
-        verify(pool, never).sendPreparedStatement(argThat(EqTo("query")))
-        verify(pool, times(1)).sendPreparedStatement(argThat(EqTo("query2")))
+        verify(pool, never).sendQuery(argThat(EqTo("query")))
+        verify(pool, times(1)).sendQuery(argThat(EqTo("query2")))
         result should be(queryResult2)
       })
     } yield assertion
@@ -158,7 +158,7 @@ class ConnectionServiceSpec extends ZioFlatSpec
     when(pool.sendPreparedStatement(*, *)).thenReturn(toCompletableFuture(queryResult))
 
     for {
-      result <- sendPreparedStatement("query", Seq(1, 2, 3))
+      result <- sendPreparedStatement("query", 1, 2, 3)
       assertion <- Task.fromTry(Try {
         verify(pool, times(1)).sendPreparedStatement(queryCaptor, valuesCaptor)
         queryCaptor.value should be("query")
@@ -181,7 +181,7 @@ class ConnectionServiceSpec extends ZioFlatSpec
     when(pool.sendPreparedStatement(*, *)).thenReturn(toCompletableFuture(queryResult2))
 
     for {
-      result <- sendPreparedStatement("query2", Seq("one", "two"))
+      result <- sendPreparedStatement("query2", "one", "two")
       assertion <- Task.fromTry(Try {
         verify(pool, times(1)).sendPreparedStatement(queryCaptor, valuesCaptor)
         queryCaptor.value should be("query2")
@@ -194,56 +194,6 @@ class ConnectionServiceSpec extends ZioFlatSpec
       })
     } yield assertion
   }
-
-  "service" should "return future of QueryResult on sendPreparedStatement query and values and release" in {
-    val queryCaptor = ArgCaptor[String]
-    val valuesCaptor = ArgCaptor[java.util.List[_ <: Any]]
-    val releaseCaptor = ArgCaptor[Boolean]
-    val queryResult = mock[QueryResult]
-
-    when(pool.sendPreparedStatement(*, *, *)).thenReturn(toCompletableFuture(queryResult))
-
-    for {
-      result <- sendPreparedStatement("query", Seq(1, 2, 3), release = true)
-      assertion <- Task.fromTry(Try {
-        verify(pool, times(1)).sendPreparedStatement(queryCaptor, valuesCaptor, releaseCaptor)
-        queryCaptor.value should be("query")
-        releaseCaptor.value should be(true)
-        val values = valuesCaptor.value
-        values.size() should be(3)
-        values.get(0) should be(1)
-        values.get(1) should be(2)
-        values.get(2) should be(3)
-
-        result should be(queryResult)
-      })
-    } yield assertion
-  }
-
-  "service" should "return future of QueryResult2 on sendPreparedStatement query2 and values2 and release2" in {
-    val queryCaptor = ArgCaptor[String]
-    val valuesCaptor = ArgCaptor[java.util.List[_ <: Any]]
-    val releaseCaptor = ArgCaptor[Boolean]
-    val queryResult2 = mock[QueryResult]
-
-    when(pool.sendPreparedStatement(*, *, *)).thenReturn(toCompletableFuture(queryResult2))
-
-    for {
-      result <- sendPreparedStatement("query2", Seq("one", "two"), release = false)
-      assertion <- Task.fromTry(Try {
-        verify(pool, times(1)).sendPreparedStatement(queryCaptor, valuesCaptor, releaseCaptor)
-        queryCaptor.value should be("query2")
-        releaseCaptor.value should be(false)
-        val values = valuesCaptor.value
-        values.size() should be(2)
-        values.get(0) should be("one")
-        values.get(1) should be("two")
-
-        result should be(queryResult2)
-      })
-    } yield assertion
-  }
-
 
   "service" should "return future of QueryResult on sendQuery query" in {
     val queryResult = mock[QueryResult]
