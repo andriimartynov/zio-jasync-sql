@@ -1,6 +1,6 @@
 lazy val Scala211 = "2.11.12"
-lazy val Scala212 = "2.12.11"
-lazy val Scala213 = "2.13.2"
+lazy val Scala212 = "2.12.12"
+lazy val Scala213 = "2.13.3"
 
 organization := "com.github.andriimartynov"
 name := "zio-jasync-sql"
