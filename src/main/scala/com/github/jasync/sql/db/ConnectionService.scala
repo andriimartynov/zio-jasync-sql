@@ -17,28 +17,28 @@ object ConnectionService {
     def disconnect(): Task[ConnectionService]
 
     def inTransaction[A](
-        rio: RIO[ConnectionService, A]
+      rio: RIO[ConnectionService, A]
     )(implicit
-        runtime: Runtime[_]
+      runtime: Runtime[_]
     ): Task[A]
 
     def isConnected: UIO[Boolean]
 
     def releasePreparedStatement(
-        query: String
+      query: String
     ): Task[Boolean]
 
     def sendPreparedStatement(
-        query: String
+      query: String
     ): Task[QueryResult]
 
     def sendPreparedStatement(
-        query: String,
-        values: Any*
+      query: String,
+      values: Any*
     ): Task[QueryResult]
 
     def sendQuery(
-        query: String
+      query: String
     ): Task[QueryResult]
 
     private[db] def connectionPool: Connection
@@ -59,9 +59,9 @@ object ConnectionService {
             .map(_ => Has(this))
 
         def inTransaction[A](
-            rio: RIO[ConnectionService, A]
+          rio: RIO[ConnectionService, A]
         )(implicit
-            runtime: Runtime[_]
+          runtime: Runtime[_]
         ): Task[A] = {
           val f: Connection => CompletableFuture[A] =
             (p1: Connection) => {
@@ -81,7 +81,7 @@ object ConnectionService {
             .fromFunction(_ => connectionPool.isConnected)
 
         def releasePreparedStatement(
-            query: String
+          query: String
         ): Task[Boolean] =
           Task
             .fromCompletionStage(
@@ -90,20 +90,20 @@ object ConnectionService {
             .map(Boolean.unbox)
 
         def sendPreparedStatement(
-            query: String
+          query: String
         ): Task[QueryResult] =
           Task
             .fromCompletionStage(connectionPool.sendQuery(query))
 
         def sendPreparedStatement(
-            query: String,
-            values: Any*
+          query: String,
+          values: Any*
         ): Task[QueryResult] =
           Task
             .fromCompletionStage(connectionPool.sendPreparedStatement(query, values.asJava))
 
         def sendQuery(
-            query: String
+          query: String
         ): Task[QueryResult] =
           Task
             .fromCompletionStage(connectionPool.sendQuery(query))
@@ -131,9 +131,9 @@ object ConnectionService {
     ZIO.accessM(_.get.disconnect())
 
   def inTransaction[A](
-      rio: RIO[ConnectionService, A]
+    rio: RIO[ConnectionService, A]
   )(implicit
-      runtime: Runtime[_]
+    runtime: Runtime[_]
   ): RIO[ConnectionService, A] =
     ZIO.accessM(_.get.inTransaction(rio))
 
@@ -141,23 +141,23 @@ object ConnectionService {
     ZIO.accessM(_.get.isConnected)
 
   def releasePreparedStatement(
-      query: String
+    query: String
   ): RIO[ConnectionService, Boolean] =
     ZIO.accessM(_.get.releasePreparedStatement(query))
 
   def sendPreparedStatement(
-      query: String
+    query: String
   ): RIO[ConnectionService, QueryResult] =
     ZIO.accessM(_.get.sendPreparedStatement(query))
 
   def sendPreparedStatement(
-      query: String,
-      values: Any*
+    query: String,
+    values: Any*
   ): RIO[ConnectionService, QueryResult] =
     ZIO.accessM(_.get.sendPreparedStatement(query, values: _*))
 
   def sendQuery(
-      query: String
+    query: String
   ): RIO[ConnectionService, QueryResult] =
     ZIO.accessM(_.get.sendQuery(query))
 }
