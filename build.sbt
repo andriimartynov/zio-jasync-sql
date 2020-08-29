@@ -7,7 +7,7 @@ name := "zio-jasync-sql"
 licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt"))
 scalaVersion := Scala212
 startYear := Some(2020)
-version := "1.0.2"
+version := "1.1.2"
 
 crossScalaVersions := Seq(Scala211, Scala212, Scala213)
 
