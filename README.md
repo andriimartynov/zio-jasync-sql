@@ -15,10 +15,10 @@ To resolve artifacts through Artifactory, simply add the following code snippet 
 resolvers += Resolver.jcenterRepo
 ```
 
-The current version is 1.1.1, which is cross-built against Scala 2.11.x, 2.12.x and 2.13.x.
+The current version is 1.1.2, which is cross-built against Scala 2.11.x, 2.12.x and 2.13.x.
 
 ```scala
-libraryDependencies += "com.github.andriimartynov" %% "zio-jasync-sql" % "1.1.1"
+libraryDependencies += "com.github.andriimartynov" %% "zio-jasync-sql" % "1.1.2"
 ```
 
 ## Usage example

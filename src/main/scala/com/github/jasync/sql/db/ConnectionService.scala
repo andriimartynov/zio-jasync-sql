@@ -124,6 +124,17 @@ object ConnectionService {
             .map(c => Service(c))
         )(c => UIO.fromFunction(_ => c.connectionPool.disconnect()))
 
+  val managed: Connection => Managed[Throwable, ConnectionService.Service] =
+    pool =>
+      Managed
+        .make(
+          Task
+            .fromCompletionStage(
+              pool.connect()
+            )
+            .map(c => Service(c))
+        )(c => UIO.fromFunction(_ => c.connectionPool.disconnect()))
+
   def connect(): RIO[ConnectionService, ConnectionService] =
     ZIO.accessM(_.get.connect())
 
